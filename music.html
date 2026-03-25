@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music — Marlou Ck</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .spotify-embed {
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .spotify-embed iframe {
+            width: 100%;
+            border-radius: 16px;
+            border: none;
+            display: block;
+        }
+
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .platform-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.9rem 1rem;
+            border-radius: 16px;
+            border: 2px solid var(--border);
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .platform-btn:hover {
+            border-color: var(--coral);
+            color: var(--coral);
+            transform: translateY(-3px);
+        }
+
+        .platform-icon {
+            font-size: 1.3rem;
+        }
+
+        .album-teaser {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #fff0e8 100%);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .album-teaser::before {
+            content: '🎵';
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.06;
+            top: -1rem;
+            right: -1rem;
+        }
+
+        .album-teaser h3 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .album-teaser p {
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .coming-soon-badge {
+            display: inline-block;
+            background-color: var(--coral);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.8rem;
+            max-width: 420px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.7rem 1.2rem;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .newsletter-form input:focus {
+            border-color: var(--coral);
+        }
+
+        .newsletter-form button {
+            padding: 0.7rem 1.5rem;
+            border-radius: 20px;
+            border: none;
+            background-color: var(--coral);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            background-color: var(--coral-light);
+        }
+
+        .releases-note {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Marlou Ck 🎵</h1>
+        <p class="header-tagline">Harpist · Streamer · Recording Artist</p>
+        <p class="header-fun">🍫 Chocolate lover · 🪰 Fruit fly scientist · 🎮 Video game music nerd</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="live.html">Live</a>
+        <a href="music.html">Music</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <main>
+
+        <section>
+            <h2>🎵 My Music</h2>
+            <p>Harp covers of video game music, classical pieces, and more —
+            available on all major streaming platforms.
+            Listen directly below or find me on your favourite platform!</p>
+
+            <!-- Spotify embedded player -->
+            <div class="spotify-embed">
+                <iframe
+                    src="https://open.spotify.com/embed/album/74I8V5na7h6Eot4NCfqEUh?utm_source=generator&theme=0"
+                    height="352"
+                    allowfullscreen
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy">
+                </iframe>
+            </div>
+
+            <!-- Streaming platform links -->
+            <h3>🎧 Listen on your favourite platform</h3>
+            <div class="platforms-grid">
+                <a href="https://open.spotify.com/intl-fr/artist/2DEO9WFC7Q2XGQTODtLZ65"
+                   target="_blank" class="platform-btn">
+                    <span class="platform-icon">🟢</span> Spotify
+                </a>
+                <a href="https://music.youtube.com/channel/UChy4dOtj5rdLSZr50KbPjzA"
+                   target="_blank" class="platform-btn">
+                    <span class="platform-icon">🔴</span> YouTube Music
+                </a>
+                <a href="https://www.deezer.com/fr/artist/139479452"
+                   target="_blank" class="platform-btn">
+                    <span class="platform-icon">🟣</span> Deezer
+                </a>
+                <a href="https://music.apple.com/fr/artist/marlouck/1576749530"
+                   target="_blank" class="platform-btn">
+                    <span class="platform-icon">🍎</span> Apple Music
+                </a>
+                <a href="https://marlouck.bandcamp.com/"
+                   target="_blank" class="platform-btn">
+                    <span class="platform-icon">🔵</span> Bandcamp
+                </a>
+            </div>
+        </section>
+
+        <div class="divider">· · · ·</div>
+
+        <!-- Album teaser section -->
+        <section>
+            <h2>🎼 Original Album</h2>
+            <div class="album-teaser">
+                <span class="coming-soon-badge">✨ Coming Soon</span>
+                <h3>My First Original Album</h3>
+                <p>I'm currently working on my very first album of original
+                compositions for harp. A musical journey mixing my love for
+                storytelling, video game atmospheres, and the unique voice
+                of the harp.</p>
+                <p>Want to be the first to know when it drops?
+                Leave your email below!</p>
+                <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                    <input type="email" placeholder="your@email.com" required />
+                    <button type="submit">Notify me! 🎵</button>
+                </form>
+                <p class="releases-note">No spam — just a message when the album is out. Promise! 🍫</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Marlou Ck · Made with 🍫 and 🎵</p>
+    </footer>
+
+    <script>
+        function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            const input = event.target.querySelector('input');
+            const button = event.target.querySelector('button');
+            button.textContent = '✅ You\'re on the list!';
+            button.style.backgroundColor = '#4CAF50';
+            input.disabled = true;
+            button.disabled = true;
+        }
+    </script>
+
+</body>
+</html>
