@@ -6,11 +6,6 @@
     <title>Live — Marlou Ck</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Live page specific styles */
-        .stream-section {
-            margin-bottom: 2rem;
-        }
-
         .stream-toggle {
             display: flex;
             justify-content: center;
@@ -82,13 +77,39 @@
             background-color: var(--bg-card);
             border-radius: 16px;
             border: 2px solid var(--border);
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
         .offline-notice .offline-emoji {
             font-size: 3rem;
             display: block;
             margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            display: inline-block;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            padding: 0.6rem 1.5rem;
+            border-radius: 20px;
+            border: 2px solid var(--coral);
+            color: var(--coral);
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background-color: var(--coral);
+            color: white;
         }
 
         .schedule-grid {
@@ -129,49 +150,21 @@
             margin-bottom: 0;
         }
 
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .social-btn {
-            display: inline-block;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 600;
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-            padding: 0.6rem 1.5rem;
-            border-radius: 20px;
-            border: 2px solid var(--coral);
-            color: var(--coral);
-            transition: all 0.3s ease;
-        }
-
-        .social-btn:hover {
-            background-color: var(--coral);
-            color: white;
-        }
-
         @media (max-width: 768px) {
             .stream-container.active {
                 flex-direction: column;
             }
-
             .stream-embed iframe,
             .chat-embed iframe {
                 height: 300px;
             }
         }
-
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🎵</h1>
+        <h1>Marlou Ck 🎵</h1>
         <p class="header-tagline">Harpist · Streamer · Recording Artist</p>
         <p class="header-fun">🍫 Chocolate lover · 🪰 Fruit fly scientist · 🎮 Video game music nerd</p>
     </header>
@@ -191,17 +184,16 @@
             from video game soundtracks to classical pieces and everything
             in between. Switch between platforms below!</p>
 
-            <!-- Platform toggle buttons -->
             <div class="stream-toggle">
-                <button class="toggle-btn active" onclick="showStream('twitch')">
+                <button class="toggle-btn active" onclick="showStream('twitch', this)">
                     🟣 Twitch
                 </button>
-                <button class="toggle-btn" onclick="showStream('youtube')">
+                <button class="toggle-btn" onclick="showStream('youtube', this)">
                     🔴 YouTube
                 </button>
             </div>
 
-            <!-- Twitch embed -->
+            <!-- Twitch -->
             <div class="stream-container active" id="twitch-stream">
                 <div class="stream-embed">
                     <iframe
@@ -211,13 +203,12 @@
                 </div>
                 <div class="chat-embed">
                     <iframe
-                        src="https://www.twitch.tv/embed/marlouck_harp/chat?parent=marlouck.com"
-                        >
+                        src="https://www.twitch.tv/embed/marlouck_harp/chat?parent=marlouck.com">
                     </iframe>
                 </div>
             </div>
 
-            <!-- YouTube embed -->
+            <!-- YouTube -->
             <div class="stream-container" id="youtube-stream">
                 <div class="stream-embed">
                     <iframe
@@ -227,14 +218,10 @@
                 </div>
                 <div class="chat-embed">
                     <iframe
-                        src="https://www.youtube.com/live_chat?v=P_nWALcd9ls&embed_domain=marlouck.com"
-                        id="yt-chat">
+                        src="https://www.youtube.com/live_chat?v=P_nWALcd9ls&embed_domain=marlouck.com">
                     </iframe>
-                <div class="offline-chat-notice">
-                    <p>💬 Chat loads when live!</p>
                 </div>
-            </div>            
-         </div>     
+            </div>
 
             <!-- Offline notice -->
             <div class="offline-notice">
@@ -243,11 +230,11 @@
                 <p>Check the schedule below or follow me on Twitch and YouTube
                 to get notified when I go live!</p>
                 <div class="social-links">
-                    <a href="https://twitch.tv/marlouck_harp" 
+                    <a href="https://twitch.tv/marlouck_harp"
                        target="_blank" class="social-btn">
                         🟣 Follow on Twitch
                     </a>
-                    <a href="https://youtube.com/marlouckharp" 
+                    <a href="https://youtube.com/@Marlouck_Harp"
                        target="_blank" class="social-btn">
                         🔴 Subscribe on YouTube
                     </a>
@@ -283,25 +270,17 @@
     </footer>
 
     <script>
-        function showStream(platform) {
-            // Hide all stream containers
+        function showStream(platform, btn) {
             document.querySelectorAll('.stream-container').forEach(el => {
                 el.classList.remove('active');
             });
-            // Remove active from all buttons
             document.querySelectorAll('.toggle-btn').forEach(el => {
                 el.classList.remove('active');
             });
-            // Show selected platform
             document.getElementById(platform + '-stream').classList.add('active');
-            // Highlight selected button
-            event.target.classList.add('active');
+            btn.classList.add('active');
         }
     </script>
 
 </body>
 </html>
-```
-
----
-
