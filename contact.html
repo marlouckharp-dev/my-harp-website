@@ -203,20 +203,27 @@
 
                 <!-- Contact form -->
                 <div class="contact-form">
-                    <form id="form-content" action="https://formspree.io/f/xeepjnen" method="POST">
+
+                    <form
+                        id="contact-form"
+                        action="https://formspree.io/f/xeepjnen"
+                        method="POST">
+
                         <div class="form-group">
                             <label for="name">Your Name</label>
-                            <input type="text" id="name" placeholder="Jane Smith" required />
+                            <input type="text" id="name" name="name"
+                                placeholder="Jane Smith" required />
                         </div>
 
                         <div class="form-group">
                             <label for="email">Your Email</label>
-                            <input type="email" id="email" placeholder="jane@email.com" required />
+                            <input type="email" id="email" name="email"
+                                placeholder="jane@email.com" required />
                         </div>
 
                         <div class="form-group">
                             <label for="subject">What's this about?</label>
-                            <select id="subject">
+                            <select id="subject" name="subject">
                                 <option value="">Select a reason...</option>
                                 <option value="recording">🎙️ Harp Recording Service</option>
                                 <option value="transcription">🎼 Transcription Service</option>
@@ -226,17 +233,18 @@
 
                         <div class="form-group">
                             <label for="message">Your Message</label>
-                            <textarea id="message"
+                            <textarea id="message" name="message"
                                 placeholder="Tell me about your project, what you need, timeline, any details that might help...">
                             </textarea>
                         </div>
 
-                        <button type="submit-btn" class="submit-btn">
+                        <button type="submit" class="submit-btn">
                             Send Message 🎵
                         </button>
                         <p class="form-note">
                             I usually respond within 2-3 days. 🍫
                         </p>
+
                     </form>
 
                     <!-- Success message -->
@@ -247,6 +255,7 @@
                         within 2-3 days. In the meantime, feel free to
                         follow me on Twitch or YouTube! 🎵</p>
                     </div>
+
                 </div>
 
                 <!-- Sidebar -->
@@ -295,33 +304,39 @@
         <p>© 2026 Marlou Ck · Made with 🍫 and 🎵</p>
     </footer>
 
- <script>
-    const form = document.getElementById('form-content');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
+    <script>
+        const form = document.getElementById('contact-form');
 
-        if (!name || !email || !message) {
-            alert('Please fill in all fields before sending! 🎵');
-            return;
-        }
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: { 'Accept': 'application/json' }
-        }).then(response => {
-            if (response.ok) {
-                document.getElementById('form-content').style.display = 'none';
-                document.getElementById('success-message').style.display = 'block';
-            } else {
-                alert('Oops! Something went wrong. Please try again! 🎵');
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (!name || !email || !message) {
+                alert('Please fill in all fields before sending! 🎵');
+                return;
             }
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    form.style.display = 'none';
+                    document.getElementById('success-message').style.display = 'block';
+                } else {
+                    alert('Oops! Something went wrong. Please try again! 🎵');
+                }
+            })
+            .catch(function() {
+                alert('Oops! Something went wrong. Please try again! 🎵');
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 </html>
