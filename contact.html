@@ -318,23 +318,27 @@
                 alert('Please fill in all fields before sending! 🎵');
                 return;
             }
-
-            fetch(form.action, {
-                method: 'POST',
-                body: new FormData(form),
-                headers: { 'Accept': 'application/json' }
-            })
-            .then(function(response) {
-                if (response.ok) {
-                    form.style.display = 'none';
-                    document.getElementById('success-message').style.display = 'block';
-                } else {
-                    alert('Oops! Something went wrong. Please try again! 🎵');
-                }
-            })
-            .catch(function() {
-                alert('Oops! Something went wrong. Please try again! 🎵');
-            });
+fetch(form.action, {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+})
+.then(function(response) {
+    return response.json().then(function(data) {
+        if (response.ok) {
+            form.style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+        } else {
+            console.log('Formspree error:', data);
+            alert('Error: ' + JSON.stringify(data));
+        }
+    });
+})
+.catch(function(err) {
+    console.log('Fetch error:', err);
+    alert('Network error: ' + err);
+});
+            
         });
     </script>
 
