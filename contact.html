@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Marlou Ck</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .contact-form {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--coral);
+        }
+
+        .form-group textarea {
+            height: 140px;
+            resize: vertical;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 20px;
+            border: none;
+            background-color: var(--coral);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--coral-light);
+            transform: translateY(-2px);
+        }
+
+        .form-note {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            text-align: center;
+            margin-top: 0.8rem;
+            margin-bottom: 0;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .success-message .success-emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-card {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-card h3 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .sidebar-card p {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .kofi-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 16px;
+            border: 2px solid var(--border);
+            background-color: white;
+            color: var(--text-primary);
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.8rem;
+        }
+
+        .kofi-btn:hover {
+            border-color: var(--coral);
+            color: var(--coral);
+            transform: translateY(-2px);
+        }
+
+        .service-list {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0;
+        }
+
+        .service-list li {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            padding: 0.4rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Marlou Ck 🎵</h1>
+        <p class="header-tagline">Harpist · Streamer · Recording Artist</p>
+        <p class="header-fun">🍫 Chocolate lover · 🪰 Fruit fly scientist · 🎮 Video game music nerd</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="live.html">Live</a>
+        <a href="music.html">Music</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <main>
+
+        <section>
+            <h2>📬 Get In Touch</h2>
+            <p>Have a project in mind, want to commission a harp recording
+            or transcription, or just want to say hi?
+            I'd love to hear from you! 🎵</p>
+
+            <div class="contact-grid">
+
+                <!-- Contact form -->
+                <div class="contact-form">
+                    <div id="form-content" action="https://formspree.io/f/xeepjnen" method="POST">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" placeholder="Jane Smith" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" placeholder="jane@email.com" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">What's this about?</label>
+                            <select id="subject">
+                                <option value="">Select a reason...</option>
+                                <option value="recording">🎙️ Harp Recording Service</option>
+                                <option value="transcription">🎼 Transcription Service</option>
+                                <option value="general">💬 General Enquiry</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea id="message"
+                                placeholder="Tell me about your project, what you need, timeline, any details that might help...">
+                            </textarea>
+                        </div>
+
+                        <button class="submit-btn" class="submit-btn">
+                            Send Message 🎵
+                        </button>
+                        <p class="form-note">
+                            I usually respond within 2-3 days. 🍫
+                        </p>
+                    </div>
+
+                    <!-- Success message -->
+                    <div class="success-message" id="success-message">
+                        <span class="success-emoji">🎉</span>
+                        <h3>Message sent!</h3>
+                        <p>Thank you for reaching out! I'll get back to you
+                        within 2-3 days. In the meantime, feel free to
+                        follow me on Twitch or YouTube! 🎵</p>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div>
+
+                    <!-- Ko-fi card -->
+                    <div class="sidebar-card">
+                        <h3>☕ Support My Work</h3>
+                        <p>If you enjoy my music and streams, you can
+                        support me directly on Ko-fi — every coffee
+                        helps me create more music! 🍫</p>
+                        <a href="https://ko-fi.com/marlouck_harp"
+                           target="_blank" class="kofi-btn">
+                            ☕ Support on Ko-fi
+                        </a>
+                    </div>
+
+                    <!-- Services card -->
+                    <div class="sidebar-card">
+                        <h3>🎼 My Services</h3>
+                        <p>Available for professional harp work:</p>
+                        <ul class="service-list">
+                            <li>
+                                <span>🎙️</span>
+                                <span>Custom harp recordings for your project</span>
+                            </li>
+                            <li>
+                                <span>🎼</span>
+                                <span>Sheet music transcription for harp</span>
+                            </li>
+                            <li>
+                                <span>💬</span>
+                                <span>General musical enquiries welcome</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Marlou Ck · Made with 🍫 and 🎵</p>
+    </footer>
+
+ <script>
+    const form = document.getElementById('form-content');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+
+        if (!name || !email || !message) {
+            alert('Please fill in all fields before sending! 🎵');
+            return;
+        }
+
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+        }).then(response => {
+            if (response.ok) {
+                document.getElementById('form-content').style.display = 'none';
+                document.getElementById('success-message').style.display = 'block';
+            } else {
+                alert('Oops! Something went wrong. Please try again! 🎵');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
