@@ -6,15 +6,46 @@
     <title>Music — Marlou Ck</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .spotify-embed {
-            border-radius: 16px;
-            overflow: hidden;
+        .featured-release {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
             margin-bottom: 2rem;
         }
 
-        .spotify-embed iframe {
+        .featured-label {
+            display: inline-block;
+            background-color: var(--coral);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .featured-release iframe {
             width: 100%;
-            border-radius: 16px;
+            border-radius: 12px;
+            border: none;
+            display: block;
+        }
+
+        .full-catalog {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .full-catalog iframe {
+            width: 100%;
+            border-radius: 12px;
             border: none;
             display: block;
         }
@@ -55,7 +86,7 @@
         }
 
         .album-teaser {
-            background: linear-gradient(135deg, var(--bg-card) 0%, #fff0e8 100%);
+            background-color: var(--bg-card);
             border: 2px solid var(--border);
             border-radius: 20px;
             padding: 2.5rem;
@@ -176,10 +207,24 @@
             available on all major streaming platforms.
             Listen directly below or find me on your favourite platform!</p>
 
-            <!-- Spotify embedded player -->
-            <div class="spotify-embed">
+            <!-- Featured latest release -->
+            <div class="featured-release">
+                <span class="featured-label">✨ Latest Release</span>
                 <iframe
                     src="https://open.spotify.com/embed/album/74I8V5na7h6Eot4NCfqEUh?utm_source=generator&theme=0"
+                    height="352"
+                    allowfullscreen
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy">
+                </iframe>
+            </div>
+
+            <!-- Full catalog -->
+            <div class="full-catalog">
+                <h3>🎶 Full Discography</h3>
+                <p>All my releases in one place — browse and listen below!</p>
+                <iframe
+                    src="https://open.spotify.com/embed/artist/2DEO9WFC7Q2XGQTODtLZ65?utm_source=generator&theme=0"
                     height="352"
                     allowfullscreen
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
