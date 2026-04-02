@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song List — Marlou Ck</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .songlist-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 2;
+            min-width: 200px;
+            padding: 0.7rem 1.2rem;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--coral);
+        }
+
+        .category-select {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.7rem 1.2rem;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .category-select:focus {
+            border-color: var(--coral);
+        }
+
+        .songs-count {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .song-card {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .song-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--coral-light);
+        }
+
+        .song-title {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .song-artist {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .song-category {
+            display: inline-block;
+            background-color: var(--border);
+            color: var(--coral);
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            align-self: flex-start;
+        }
+
+        .request-btn {
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 2px solid var(--coral);
+            background-color: transparent;
+            color: var(--coral);
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .request-btn:hover {
+            background-color: var(--coral);
+            color: white;
+        }
+
+        .request-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: var(--text-secondary);
+            color: var(--text-secondary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 440px;
+            width: 90%;
+            position: relative;
+        }
+
+        .modal h3 {
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-song-info {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .modal-input:focus {
+            border-color: var(--coral);
+        }
+
+        .modal-textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            margin-bottom: 1rem;
+            height: 100px;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .modal-textarea:focus {
+            border-color: var(--coral);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 20px;
+            border: none;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.primary {
+            background-color: var(--coral);
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background-color: var(--coral-light);
+        }
+
+        .modal-btn.secondary {
+            background-color: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .modal-btn.secondary:hover {
+            border-color: var(--coral);
+            color: var(--coral);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .closed-notice {
+            text-align: center;
+            padding: 3rem 2rem;
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .closed-notice .closed-emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .success-overlay {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .success-overlay .success-emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Marlou Ck 🎵</h1>
+        <p class="header-tagline">Harpist · Streamer · Recording Artist</p>
+        <p class="header-fun">🍫 Chocolate lover · 🪰 Fruit fly scientist · 🎮 Video game music nerd</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="live.html">Live</a>
+        <a href="music.html">Music</a>
+        <a href="songlist.html">Song List</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <main>
+
+        <section>
+            <h2>🎵 Song List</h2>
+            <p>Browse all the songs I can play and submit a request
+            during a live stream! Requests are only open when I'm live. 🎶</p>
+
+            <!-- Closed notice -->
+            <div class="closed-notice" id="closed-notice" style="display:none">
+                <span class="closed-emoji">🎵</span>
+                <h3>Requests are closed right now!</h3>
+                <p>I'm not currently live — follow me on Twitch or YouTube
+                to get notified when I go live and open requests!</p>
+            </div>
+
+            <!-- Search and filter -->
+            <div class="songlist-controls">
+                <input
+                    type="text"
+                    class="search-input"
+                    id="search-input"
+                    placeholder="🔍 Search by title or artist..."
+                />
+                <select class="category-select" id="category-select">
+                    <option value="">All categories</option>
+                </select>
+            </div>
+
+            <p class="songs-count" id="songs-count">Loading songs...</p>
+
+            <!-- Song grid -->
+            <div class="song-grid" id="song-grid">
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Request Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" id="modal-close">✕</button>
+
+            <div id="modal-form-content">
+                <h3>🎵 Request a Song</h3>
+                <p class="modal-song-info" id="modal-song-info"></p>
+
+                <input
+                    type="text"
+                    class="modal-input"
+                    id="requester-name"
+                    placeholder="Your name or username *"
+                />
+                <textarea
+                    class="modal-textarea"
+                    id="requester-message"
+                    placeholder="Optional message to Marlou... 🍫">
+                </textarea>
+
+                <div class="modal-buttons">
+                    <button class="modal-btn secondary" id="modal-cancel">
+                        Cancel
+                    </button>
+                    <button class="modal-btn primary" id="modal-submit">
+                        Send Request 🎵
+                    </button>
+                </div>
+            </div>
+
+            <div class="success-overlay" id="modal-success">
+                <span class="success-emoji">🎉</span>
+                <h3>Request sent!</h3>
+                <p>Your request has been added to the queue.
+                Fingers crossed Marlou plays it! 🎵🍫</p>
+                <button class="modal-btn primary" id="modal-done">
+                    Done!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Marlou Ck · Made with 🍫 and 🎵</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const API = 'https://api.marlouck.com';
+            let allSongs = [];
+            let requestsOpen = false;
+            let selectedSong = null;
+
+            // ============================================
+            // LOAD STATUS AND SONGS
+            // ============================================
+
+            function init() {
+                fetch(API + '/api/status')
+                    .then(function(res) { return res.json(); })
+                    .then(function(data) {
+                        requestsOpen = data.requests_open;
+                        if (!requestsOpen) {
+                            document.getElementById('closed-notice').style.display = 'block';
+                        }
+                        loadSongs();
+                    })
+                    .catch(function() {
+                        loadSongs();
+                    });
+            }
+
+            function loadSongs() {
+                fetch(API + '/api/songs')
+                    .then(function(res) { return res.json(); })
+                    .then(function(songs) {
+                        allSongs = songs;
+                        populateCategories(songs);
+                        renderSongs(songs);
+                    });
+            }
+
+            // ============================================
+            // CATEGORIES
+            // ============================================
+
+            function populateCategories(songs) {
+                var categories = [];
+                songs.forEach(function(s) {
+                    if (s.category && categories.indexOf(s.category) === -1) {
+                        categories.push(s.category);
+                    }
+                });
+                categories.sort();
+
+                var select = document.getElementById('category-select');
+                categories.forEach(function(cat) {
+                    var option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat;
+                    select.appendChild(option);
+                });
+            }
+
+            // ============================================
+            // RENDER SONGS
+            // ============================================
+
+            function renderSongs(songs) {
+                var grid = document.getElementById('song-grid');
+                var count = document.getElementById('songs-count');
+
+                count.textContent = songs.length + ' song' +
+                    (songs.length !== 1 ? 's' : '') + ' found';
+
+                if (!songs.length) {
+                    grid.innerHTML = '<div class="no-results">' +
+                        '🎵 No songs found — try a different search!</div>';
+                    return;
+                }
+
+                grid.innerHTML = songs.map(function(s) {
+                    return '<div class="song-card">' +
+                        '<p class="song-title">' + s.title + '</p>' +
+                        '<p class="song-artist">by ' + s.artist + '</p>' +
+                        '<span class="song-category">' + (s.category || 'other') + '</span>' +
+                        '<button class="request-btn" ' +
+                        (requestsOpen ? '' : 'disabled ') +
+                        'data-id="' + s.id + '" ' +
+                        'data-title="' + s.title + '" ' +
+                        'data-artist="' + s.artist + '">' +
+                        (requestsOpen ? '🎵 Request' : '🔒 Requests closed') +
+                        '</button>' +
+                        '</div>';
+                }).join('');
+
+                // Add click events to request buttons
+                document.querySelectorAll('.request-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        selectedSong = {
+                            id: this.dataset.id,
+                            title: this.dataset.title,
+                            artist: this.dataset.artist
+                        };
+                        openModal();
+                    });
+                });
+            }
+
+            // ============================================
+            // SEARCH AND FILTER
+            // ============================================
+
+            function filterSongs() {
+                var search = document.getElementById('search-input')
+                    .value.toLowerCase();
+                var category = document.getElementById('category-select').value;
+
+                var filtered = allSongs.filter(function(s) {
+                    var matchSearch = !search ||
+                        s.title.toLowerCase().includes(search) ||
+                        s.artist.toLowerCase().includes(search);
+                    var matchCategory = !category || s.category === category;
+                    return matchSearch && matchCategory;
+                });
+
+                renderSongs(filtered);
+            }
+
+            document.getElementById('search-input')
+                .addEventListener('input', filterSongs);
+            document.getElementById('category-select')
+                .addEventListener('change', filterSongs);
+
+            // ============================================
+            // MODAL
+            // ============================================
+
+            function openModal() {
+                document.getElementById('modal-song-info').textContent =
+                    '🎵 ' + selectedSong.title + ' — ' + selectedSong.artist;
+                document.getElementById('requester-name').value = '';
+                document.getElementById('requester-message').value = '';
+                document.getElementById('modal-form-content').style.display = 'block';
+                document.getElementById('modal-success').style.display = 'none';
+                document.getElementById('modal-overlay').classList.add('active');
+            }
+
+            function closeModal() {
+                document.getElementById('modal-overlay').classList.remove('active');
+                selectedSong = null;
+            }
+
+            document.getElementById('modal-close')
+                .addEventListener('click', closeModal);
+            document.getElementById('modal-cancel')
+                .addEventListener('click', closeModal);
+            document.getElementById('modal-done')
+                .addEventListener('click', closeModal);
+
+            document.getElementById('modal-overlay')
+                .addEventListener('click', function(e) {
+                    if (e.target === this) closeModal();
+                });
+
+            // ============================================
+            // SUBMIT REQUEST
+            // ============================================
+
+            document.getElementById('modal-submit')
+                .addEventListener('click', function() {
+                    var name = document.getElementById('requester-name')
+                        .value.trim();
+                    if (!name) {
+                        alert('Please enter your name! 🎵');
+                        return;
+                    }
+                    var message = document.getElementById('requester-message')
+                        .value.trim();
+
+                    fetch(API + '/api/requests', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            song_id: selectedSong.id,
+                            song_title: selectedSong.title,
+                            song_artist: selectedSong.artist,
+                            requester_name: name,
+                            message: message
+                        })
+                    })
+                    .then(function(res) { return res.json(); })
+                    .then(function(data) {
+                        if (data.success) {
+                            document.getElementById('modal-form-content')
+                                .style.display = 'none';
+                            document.getElementById('modal-success')
+                                .style.display = 'block';
+                        } else {
+                            alert('Oops! ' + data.error);
+                        }
+                    });
+                });
+
+            // ============================================
+            // START
+            // ============================================
+
+            init();
+
+        });
+    </script>
+
+</body>
+</html>
