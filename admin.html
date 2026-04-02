@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Marlou Ck</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-login {
+            max-width: 400px;
+            margin: 4rem auto;
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-section {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .admin-input:focus {
+            border-color: var(--coral);
+        }
+
+        .admin-btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 20px;
+            border: none;
+            background-color: var(--coral);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-btn:hover {
+            background-color: var(--coral-light);
+            transform: translateY(-2px);
+        }
+
+        .admin-btn.green {
+            background-color: #4CAF50;
+        }
+
+        .admin-btn.green:hover {
+            background-color: #66BB6A;
+        }
+
+        .admin-btn.red {
+            background-color: #ef5350;
+        }
+
+        .admin-btn.red:hover {
+            background-color: #e57373;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-open {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-closed {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .song-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .song-table th {
+            text-align: left;
+            padding: 0.6rem 1rem;
+            background-color: var(--border);
+            color: var(--text-primary);
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+        }
+
+        .song-table td {
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .song-table tr:hover td {
+            background-color: var(--bg-secondary);
+        }
+
+        .request-card {
+            background-color: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .request-info h4 {
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .request-info p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .message-box {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .message-box.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            display: block;
+        }
+
+        .message-box.error {
+            background-color: #ffebee;
+            color: #c62828;
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Marlou Ck 🎵</h1>
+        <p class="header-tagline">Admin Dashboard</p>
+        <p class="header-fun">🔐 Private area — only you can see this!</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="live.html">Live</a>
+        <a href="music.html">Music</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <main>
+
+        <!-- Login -->
+        <div class="admin-login" id="login-section">
+            <h2>🔐 Admin Login</h2>
+            <p>Enter your admin secret to access the dashboard.</p>
+            <input type="password" class="admin-input"
+                id="secret-input" placeholder="Your admin secret..." />
+            <button class="admin-btn" onclick="login()">Login 🎵</button>
+            <div id="login-error" class="message-box error" style="display:none">
+                Wrong secret! Try again. 🎵
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div class="admin-panel" id="admin-panel">
+
+            <!-- Request Queue Status -->
+            <div class="admin-section">
+                <h2>🎵 Request Queue</h2>
+                <p>Control whether viewers can submit song requests.</p>
+                <div id="status-badge" class="status-badge status-closed">
+                    ⛔ Requests Closed
+                </div>
+                <br>
+                <button class="admin-btn green" onclick="setRequests(true)">
+                    ✅ Open Requests
+                </button>
+                <button class="admin-btn red" onclick="setRequests(false)">
+                    ⛔ Close Requests
+                </button>
+            </div>
+
+            <!-- Current Requests -->
+            <div class="admin-section">
+                <h2>📋 Current Requests</h2>
+                <p>Requests from viewers during your stream.</p>
+                <button class="admin-btn" onclick="loadRequests()">
+                    🔄 Refresh Requests
+                </button>
+                <div id="requests-list" style="margin-top: 1rem;">
+                    <p>Click refresh to load requests.</p>
+                </div>
+            </div>
+
+            <!-- Import Songs -->
+            <div class="admin-section">
+                <h2>📂 Import Songs from CSV</h2>
+                <p>Upload your song list CSV file — columns needed:
+                <strong>title, artist, category</strong></p>
+                <input type="file" id="csv-file"
+                    accept=".csv" class="admin-input" />
+                <button class="admin-btn" onclick="importCSV()">
+                    📂 Import CSV
+                </button>
+                <div id="import-message" class="message-box"></div>
+            </div>
+
+            <!-- Add Single Song -->
+            <div class="admin-section">
+                <h2>➕ Add a Single Song</h2>
+                <div class="form-row">
+                    <input type="text" class="admin-input"
+                        id="new-title" placeholder="Song title" />
+                    <input type="text" class="admin-input"
+                        id="new-artist" placeholder="Artist" />
+                    <input type="text" class="admin-input"
+                        id="new-category" placeholder="Category" />
+                </div>
+                <button class="admin-btn" onclick="addSong()">
+                    ➕ Add Song
+                </button>
+                <div id="add-message" class="message-box"></div>
+            </div>
+
+            <!-- Song List -->
+            <div class="admin-section">
+                <h2>🎵 Song List</h2>
+                <button class="admin-btn" onclick="loadSongs()">
+                    🔄 Refresh Song List
+                </button>
+                <div id="songs-list" style="margin-top: 1rem;">
+                    <p>Click refresh to load songs.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Marlou Ck · Made with 🍫 and 🎵</p>
+    </footer>
+
+    <script>
+        const API = 'https://api.marlouck.com';
+        let SECRET = '';
+
+        function login() {
+            const input = document.getElementById('secret-input').value;
+            if (!input) return;
+
+            fetch(`${API}/api/status`)
+                .then(res => res.json())
+                .then(data => {
+                    SECRET = input;
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('admin-panel').style.display = 'block';
+                    updateStatusBadge(data.requests_open);
+                    loadRequests();
+                    loadSongs();
+                })
+                .catch(() => {
+                    document.getElementById('login-error').style.display = 'block';
+                });
+        }
+
+        function updateStatusBadge(isOpen) {
+            const badge = document.getElementById('status-badge');
+            if (isOpen) {
+                badge.className = 'status-badge status-open';
+                badge.textContent = '✅ Requests Open';
+            } else {
+                badge.className = 'status-badge status-closed';
+                badge.textContent = '⛔ Requests Closed';
+            }
+        }
+
+        function setRequests(open) {
+            fetch(`${API}/api/status`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ open, secret: SECRET })
+            })
+            .then(res => res.json())
+            .then(data => updateStatusBadge(data.requests_open));
+        }
+
+        function loadRequests() {
+            fetch(`${API}/api/requests?secret=${SECRET}`)
+                .then(res => res.json())
+                .then(requests => {
+                    const container = document.getElementById('requests-list');
+                    if (!requests.length) {
+                        container.innerHTML = '<p>No pending requests! 🎵</p>';
+                        return;
+                    }
+                    container.innerHTML = requests.map(r => `
+                        <div class="request-card">
+                            <div class="request-info">
+                                <h4>🎵 ${r.song_title} — ${r.song_artist}</h4>
+                                <p>Requested by <strong>${r.requester_name}</strong>
+                                ${r.message ? `· "${r.message}"` : ''}</p>
+                            </div>
+                            <div>
+                                <button class="admin-btn green"
+                                    onclick="updateRequest(${r.id}, 'played')">
+                                    ✅ Played
+                                </button>
+                                <button class="admin-btn red"
+                                    onclick="updateRequest(${r.id}, 'skipped')">
+                                    ⏭️ Skip
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                });
+        }
+
+        function updateRequest(id, status) {
+            fetch(`${API}/api/requests/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status, secret: SECRET })
+            })
+            .then(() => loadRequests());
+        }
+
+        function importCSV() {
+            const file = document.getElementById('csv-file').files[0];
+            if (!file) {
+                showMessage('import-message', 'error', 'Please select a CSV file first!');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('secret', SECRET);
+
+            fetch(`${API}/api/songs/import`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('import-message', 'success',
+                        `✅ ${data.message}`);
+                    loadSongs();
+                } else {
+                    showMessage('import-message', 'error', data.error);
+                }
+            });
+        }
+
+        function addSong() {
+            const title = document.getElementById('new-title').value.trim();
+            const artist = document.getElementById('new-artist').value.trim();
+            const category = document.getElementById('new-category').value.trim();
+
+            if (!title || !artist) {
+                showMessage('add-message', 'error',
+                    'Title and artist are required!');
+                return;
+            }
+
+            fetch(`${API}/api/songs`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, artist, category, secret: SECRET })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('add-message', 'success', '✅ Song added!');
+                    document.getElementById('new-title').value = '';
+                    document.getElementById('new-artist').value = '';
+                    document.getElementById('new-category').value = '';
+                    loadSongs();
+                } else {
+                    showMessage('add-message', 'error', data.error);
+                }
+            });
+        }
+
+        function loadSongs() {
+            fetch(`${API}/api/songs`)
+                .then(res => res.json())
+                .then(songs => {
+                    const container = document.getElementById('songs-list');
+                    if (!songs.length) {
+                        container.innerHTML = '<p>No songs yet — import your CSV! 🎵</p>';
+                        return;
+                    }
+                    container.innerHTML = `
+                        <table class="song-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Artist</th>
+                                    <th>Category</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${songs.map(s => `
+                                    <tr>
+                                        <td>${s.title}</td>
+                                        <td>${s.artist}</td>
+                                        <td>${s.category}</td>
+                                        <td>
+                                            <button class="admin-btn red"
+                                                onclick="deleteSong(${s.id})"
+                                                style="padding: 0.3rem 0.8rem;
+                                                font-size: 0.75rem;">
+                                                🗑️ Delete
+                                            </button>
