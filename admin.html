@@ -209,7 +209,7 @@
             <p>Enter your admin secret to access the dashboard.</p>
             <input type="password" class="admin-input"
                 id="secret-input" placeholder="Your admin secret..." />
-            <button class="admin-btn" onclick="login()">Login 🎵</button>
+            <button class="admin-btn" id="login()">Login 🎵</button>
             <div id="login-error" class="message-box error" style="display:none">
                 Wrong secret! Try again. 🎵
             </div>
@@ -300,8 +300,13 @@
         let SECRET = '';
 
         function login() {
-            const input = document.getElementById('secret-input').value;
-            if (!input) return;
+            const input = document.getElementById('secret-input')
+    .addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') login();
+    });
+
+document.getElementById('login-btn')
+    .addEventListener('click', login);
 
             fetch(`${API}/api/status`)
                 .then(res => res.json())
