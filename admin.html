@@ -160,13 +160,13 @@
             display: none;
         }
 
-        .message-box.success {
+        .message-success {
             background-color: #e8f5e9;
             color: #2e7d32;
             display: block;
         }
 
-        .message-box.error {
+        .message-error {
             background-color: #ffebee;
             color: #c62828;
             display: block;
@@ -203,20 +203,25 @@
 
     <main>
 
-        <!-- Login -->
+        <!-- Login Section -->
         <div class="admin-login" id="login-section">
             <h2>🔐 Admin Login</h2>
             <p>Enter your admin secret to access the dashboard.</p>
-            <input type="password" class="admin-input"
-                id="secret-input" placeholder="Your admin secret..." />
-            <button class="admin-btn" id="login()">Login 🎵</button>
-            <div id="login-error" class="message-box error" style="display:none">
+            <input
+                type="password"
+                class="admin-input"
+                id="secret-input"
+                placeholder="Your admin secret..."
+            />
+            <button class="admin-btn" id="login-btn">Login 🎵</button>
+            <div id="login-error" class="message-box message-error"
+                style="display:none">
                 Wrong secret! Try again. 🎵
             </div>
         </div>
 
-        <!-- Admin Panel -->
-        <div class="admin-panel" id="admin-panel">
+        <!-- Admin Panel (hidden until login) -->
+        <div id="admin-panel" class="admin-panel">
 
             <!-- Request Queue Status -->
             <div class="admin-section">
@@ -226,10 +231,10 @@
                     ⛔ Requests Closed
                 </div>
                 <br>
-                <button class="admin-btn green" onclick="setRequests(true)">
+                <button class="admin-btn green" id="open-btn">
                     ✅ Open Requests
                 </button>
-                <button class="admin-btn red" onclick="setRequests(false)">
+                <button class="admin-btn red" id="close-btn">
                     ⛔ Close Requests
                 </button>
             </div>
@@ -238,7 +243,7 @@
             <div class="admin-section">
                 <h2>📋 Current Requests</h2>
                 <p>Requests from viewers during your stream.</p>
-                <button class="admin-btn" onclick="loadRequests()">
+                <button class="admin-btn" id="refresh-requests-btn">
                     🔄 Refresh Requests
                 </button>
                 <div id="requests-list" style="margin-top: 1rem;">
@@ -253,7 +258,7 @@
                 <strong>title, artist, category</strong></p>
                 <input type="file" id="csv-file"
                     accept=".csv" class="admin-input" />
-                <button class="admin-btn" onclick="importCSV()">
+                <button class="admin-btn" id="import-btn">
                     📂 Import CSV
                 </button>
                 <div id="import-message" class="message-box"></div>
@@ -270,7 +275,7 @@
                     <input type="text" class="admin-input"
                         id="new-category" placeholder="Category" />
                 </div>
-                <button class="admin-btn" onclick="addSong()">
+                <button class="admin-btn" id="add-song-btn">
                     ➕ Add Song
                 </button>
                 <div id="add-message" class="message-box"></div>
@@ -279,7 +284,7 @@
             <!-- Song List -->
             <div class="admin-section">
                 <h2>🎵 Song List</h2>
-                <button class="admin-btn" onclick="loadSongs()">
+                <button class="admin-btn" id="refresh-songs-btn">
                     🔄 Refresh Song List
                 </button>
                 <div id="songs-list" style="margin-top: 1rem;">
@@ -299,32 +304,42 @@
         const API = 'https://api.marlouck.com';
         let SECRET = '';
 
+        // ============================================
+        // LOGIN
+        // ============================================
+
         function login() {
-            const input = document.getElementById('secret-input')
-    .addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') login();
-    });
-
-document.getElementById('login-btn')
-    .addEventListener('click', login);
-
-            fetch(`${API}/api/status`)
-                .then(res => res.json())
-                .then(data => {
-                    SECRET = input;
+            const input = document.getElementById('secret-input').value.trim();
+            if (!input) {
+                showMessage('login-error', 'error', 'Please enter your secret!');
+                return;
+            }
+            SECRET = input;
+            fetch(API + '/api/status')
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
                     document.getElementById('login-section').style.display = 'none';
                     document.getElementById('admin-panel').style.display = 'block';
                     updateStatusBadge(data.requests_open);
                     loadRequests();
                     loadSongs();
                 })
-                .catch(() => {
+                .catch(function() {
                     document.getElementById('login-error').style.display = 'block';
                 });
         }
 
+        document.getElementById('login-btn').addEventListener('click', login);
+        document.getElementById('secret-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') login();
+        });
+
+        // ============================================
+        // REQUEST STATUS
+        // ============================================
+
         function updateStatusBadge(isOpen) {
-            const badge = document.getElementById('status-badge');
+            var badge = document.getElementById('status-badge');
             if (isOpen) {
                 badge.className = 'status-badge status-open';
                 badge.textContent = '✅ Requests Open';
@@ -335,100 +350,117 @@ document.getElementById('login-btn')
         }
 
         function setRequests(open) {
-            fetch(`${API}/api/status`, {
+            fetch(API + '/api/status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ open, secret: SECRET })
+                body: JSON.stringify({ open: open, secret: SECRET })
             })
-            .then(res => res.json())
-            .then(data => updateStatusBadge(data.requests_open));
+            .then(function(res) { return res.json(); })
+            .then(function(data) { updateStatusBadge(data.requests_open); });
         }
 
+        document.getElementById('open-btn').addEventListener('click', function() {
+            setRequests(true);
+        });
+        document.getElementById('close-btn').addEventListener('click', function() {
+            setRequests(false);
+        });
+
+        // ============================================
+        // REQUESTS
+        // ============================================
+
         function loadRequests() {
-            fetch(`${API}/api/requests?secret=${SECRET}`)
-                .then(res => res.json())
-                .then(requests => {
-                    const container = document.getElementById('requests-list');
+            fetch(API + '/api/requests?secret=' + SECRET)
+                .then(function(res) { return res.json(); })
+                .then(function(requests) {
+                    var container = document.getElementById('requests-list');
                     if (!requests.length) {
                         container.innerHTML = '<p>No pending requests! 🎵</p>';
                         return;
                     }
-                    container.innerHTML = requests.map(r => `
-                        <div class="request-card">
-                            <div class="request-info">
-                                <h4>🎵 ${r.song_title} — ${r.song_artist}</h4>
-                                <p>Requested by <strong>${r.requester_name}</strong>
-                                ${r.message ? `· "${r.message}"` : ''}</p>
-                            </div>
-                            <div>
-                                <button class="admin-btn green"
-                                    onclick="updateRequest(${r.id}, 'played')">
-                                    ✅ Played
-                                </button>
-                                <button class="admin-btn red"
-                                    onclick="updateRequest(${r.id}, 'skipped')">
-                                    ⏭️ Skip
-                                </button>
-                            </div>
-                        </div>
-                    `).join('');
+                    container.innerHTML = requests.map(function(r) {
+                        return '<div class="request-card">' +
+                            '<div class="request-info">' +
+                                '<h4>🎵 ' + r.song_title + ' — ' + r.song_artist + '</h4>' +
+                                '<p>Requested by <strong>' + r.requester_name + '</strong>' +
+                                (r.message ? ' · "' + r.message + '"' : '') + '</p>' +
+                            '</div>' +
+                            '<div>' +
+                                '<button class="admin-btn green" onclick="updateRequest(' + r.id + ', \'played\')">✅ Played</button>' +
+                                '<button class="admin-btn red" onclick="updateRequest(' + r.id + ', \'skipped\')">⏭️ Skip</button>' +
+                            '</div>' +
+                        '</div>';
+                    }).join('');
                 });
         }
 
+        document.getElementById('refresh-requests-btn').addEventListener('click', loadRequests);
+
         function updateRequest(id, status) {
-            fetch(`${API}/api/requests/${id}`, {
+            fetch(API + '/api/requests/' + id, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status, secret: SECRET })
+                body: JSON.stringify({ status: status, secret: SECRET })
             })
-            .then(() => loadRequests());
+            .then(function() { loadRequests(); });
         }
 
-        function importCSV() {
-            const file = document.getElementById('csv-file').files[0];
+        // ============================================
+        // CSV IMPORT
+        // ============================================
+
+        document.getElementById('import-btn').addEventListener('click', function() {
+            var file = document.getElementById('csv-file').files[0];
             if (!file) {
                 showMessage('import-message', 'error', 'Please select a CSV file first!');
                 return;
             }
-
-            const formData = new FormData();
+            var formData = new FormData();
             formData.append('file', file);
             formData.append('secret', SECRET);
 
-            fetch(`${API}/api/songs/import`, {
+            fetch(API + '/api/songs/import', {
                 method: 'POST',
                 body: formData
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
                 if (data.success) {
-                    showMessage('import-message', 'success',
-                        `✅ ${data.message}`);
+                    showMessage('import-message', 'success', '✅ ' + data.message);
                     loadSongs();
                 } else {
                     showMessage('import-message', 'error', data.error);
                 }
             });
-        }
+        });
 
-        function addSong() {
-            const title = document.getElementById('new-title').value.trim();
-            const artist = document.getElementById('new-artist').value.trim();
-            const category = document.getElementById('new-category').value.trim();
+        // ============================================
+        // ADD SINGLE SONG
+        // ============================================
+
+        document.getElementById('add-song-btn').addEventListener('click', function() {
+            var title = document.getElementById('new-title').value.trim();
+            var artist = document.getElementById('new-artist').value.trim();
+            var category = document.getElementById('new-category').value.trim();
 
             if (!title || !artist) {
-                showMessage('add-message', 'error',
-                    'Title and artist are required!');
+                showMessage('add-message', 'error', 'Title and artist are required!');
                 return;
             }
 
-            fetch(`${API}/api/songs`, {
+            fetch(API + '/api/songs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, artist, category, secret: SECRET })
+                body: JSON.stringify({
+                    title: title,
+                    artist: artist,
+                    category: category,
+                    secret: SECRET
+                })
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
                 if (data.success) {
                     showMessage('add-message', 'success', '✅ Song added!');
                     document.getElementById('new-title').value = '';
@@ -439,37 +471,67 @@ document.getElementById('login-btn')
                     showMessage('add-message', 'error', data.error);
                 }
             });
-        }
+        });
+
+        // ============================================
+        // SONG LIST
+        // ============================================
 
         function loadSongs() {
-            fetch(`${API}/api/songs`)
-                .then(res => res.json())
-                .then(songs => {
-                    const container = document.getElementById('songs-list');
+            fetch(API + '/api/songs')
+                .then(function(res) { return res.json(); })
+                .then(function(songs) {
+                    var container = document.getElementById('songs-list');
                     if (!songs.length) {
                         container.innerHTML = '<p>No songs yet — import your CSV! 🎵</p>';
                         return;
                     }
-                    container.innerHTML = `
-                        <table class="song-table">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Artist</th>
-                                    <th>Category</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${songs.map(s => `
-                                    <tr>
-                                        <td>${s.title}</td>
-                                        <td>${s.artist}</td>
-                                        <td>${s.category}</td>
-                                        <td>
-                                            <button class="admin-btn red"
-                                                onclick="deleteSong(${s.id})"
-                                                style="padding: 0.3rem 0.8rem;
-                                                font-size: 0.75rem;">
-                                                🗑️ Delete
-                                            </button>
+                    var html = '<table class="song-table"><thead><tr>' +
+                        '<th>Title</th><th>Artist</th><th>Category</th><th>Action</th>' +
+                        '</tr></thead><tbody>';
+                    songs.forEach(function(s) {
+                        html += '<tr>' +
+                            '<td>' + s.title + '</td>' +
+                            '<td>' + s.artist + '</td>' +
+                            '<td>' + s.category + '</td>' +
+                            '<td><button class="admin-btn red" ' +
+                            'onclick="deleteSong(' + s.id + ')" ' +
+                            'style="padding:0.3rem 0.8rem;font-size:0.75rem;">' +
+                            '🗑️ Delete</button></td>' +
+                            '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    container.innerHTML = html;
+                });
+        }
+
+        document.getElementById('refresh-songs-btn').addEventListener('click', loadSongs);
+
+        function deleteSong(id) {
+            if (!confirm('Delete this song?')) return;
+            fetch(API + '/api/songs/' + id, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ secret: SECRET })
+            })
+            .then(function() { loadSongs(); });
+        }
+
+        // ============================================
+        // HELPER
+        // ============================================
+
+        function showMessage(id, type, text) {
+            var el = document.getElementById(id);
+            el.className = 'message-box message-' + type;
+            el.textContent = text;
+            setTimeout(function() {
+                el.className = 'message-box';
+                el.textContent = '';
+            }, 5000);
+        }
+
+    </script>
+
+</body>
+</html>
