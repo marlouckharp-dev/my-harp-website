@@ -149,6 +149,263 @@
             margin-top: 0.3rem;
             margin-bottom: 0;
         }
+.request-section {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+        }
+
+        .request-section.visible {
+            display: block;
+        }
+
+        .request-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .request-search {
+            flex: 2;
+            min-width: 200px;
+            padding: 0.7rem 1.2rem;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .request-search:focus {
+            border-color: var(--coral);
+        }
+
+        .request-category {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.7rem 1.2rem;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .request-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .request-song-card {
+            background-color: white;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .request-song-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--coral-light);
+        }
+
+        .request-song-title {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .request-song-artist {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .request-song-category {
+            display: inline-block;
+            background-color: var(--border);
+            color: var(--coral);
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.72rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            align-self: flex-start;
+        }
+
+        .request-song-btn {
+            margin-top: 0.4rem;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            border: 2px solid var(--coral);
+            background-color: transparent;
+            color: var(--coral);
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .request-song-btn:hover {
+            background-color: var(--coral);
+            color: white;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 440px;
+            width: 90%;
+            position: relative;
+        }
+
+        .modal h3 {
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-song-info {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .modal-input:focus {
+            border-color: var(--coral);
+        }
+
+        .modal-textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+            margin-bottom: 1rem;
+            height: 100px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .modal-textarea:focus {
+            border-color: var(--coral);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 20px;
+            border: none;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.primary {
+            background-color: var(--coral);
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background-color: var(--coral-light);
+        }
+
+        .modal-btn.secondary {
+            background-color: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .modal-btn.secondary:hover {
+            border-color: var(--coral);
+            color: var(--coral);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .success-overlay {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .songs-count {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
 
         @media (max-width: 768px) {
             .stream-container.active {
@@ -224,6 +481,25 @@
                 </div>
             </div>
 
+<!-- Request Section (only visible when requests are open) -->
+            <div class="request-section" id="request-section">
+                <h3>🎵 Request a Song</h3>
+                <p>Find a song below and click Request to add it to the queue!</p>
+                <div class="request-controls">
+                    <input
+                        type="text"
+                        class="request-search"
+                        id="request-search"
+                        placeholder="🔍 Search by title or artist..."
+                    />
+                    <select class="request-category" id="request-category">
+                        <option value="">All categories</option>
+                    </select>
+                </div>
+                <p class="songs-count" id="request-songs-count"></p>
+                <div class="request-grid" id="request-grid"></div>
+            </div>
+
             <!-- Offline notice -->
             <div class="offline-notice">
                 <span class="offline-emoji">🎵</span>
@@ -266,21 +542,264 @@
 
     </main>
 
+<!-- Request Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" id="modal-close">✕</button>
+            <div id="modal-form-content">
+                <h3>🎵 Request a Song</h3>
+                <p class="modal-song-info" id="modal-song-info"></p>
+                <input
+                    type="text"
+                    class="modal-input"
+                    id="requester-name"
+                    placeholder="Your name or username *"
+                />
+                <textarea
+                    class="modal-textarea"
+                    id="requester-message"
+                    placeholder="Optional message to Marlou... 🍫">
+                </textarea>
+                <div class="modal-buttons">
+                    <button class="modal-btn secondary" id="modal-cancel">
+                        Cancel
+                    </button>
+                    <button class="modal-btn primary" id="modal-submit">
+                        Send Request 🎵
+                    </button>
+                </div>
+            </div>
+            <div class="success-overlay" id="modal-success">
+                <h3>🎉 Request sent!</h3>
+                <p>Your request has been added to the queue.
+                Fingers crossed Marlou plays it! 🎵🍫</p>
+                <button class="modal-btn primary" id="modal-done">
+                    Done!
+                </button>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>© 2026 Marlou Ck · Made with 🍫 and 🎵</p>
     </footer>
 
-    <script>
-        function showStream(platform, btn) {
-            document.querySelectorAll('.stream-container').forEach(el => {
-                el.classList.remove('active');
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            var API = 'https://api.marlouck.com';
+            var allSongs = [];
+            var selectedSong = null;
+
+            // ============================================
+            // STREAM TOGGLE
+            // ============================================
+
+            function showStream(platform, btn) {
+                document.querySelectorAll('.stream-container').forEach(function(el) {
+                    el.classList.remove('active');
+                });
+                document.querySelectorAll('.toggle-btn').forEach(function(el) {
+                    el.classList.remove('active');
+                });
+                document.getElementById(platform + '-stream').classList.add('active');
+                btn.classList.add('active');
+            }
+
+            document.querySelectorAll('.toggle-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var platform = this.textContent.includes('Twitch') ? 'twitch' : 'youtube';
+                    showStream(platform, this);
+                });
             });
-            document.querySelectorAll('.toggle-btn').forEach(el => {
-                el.classList.remove('active');
-            });
-            document.getElementById(platform + '-stream').classList.add('active');
-            btn.classList.add('active');
-        }
+
+            // ============================================
+            // CHECK IF REQUESTS ARE OPEN
+            // ============================================
+
+            function checkStatus() {
+                fetch(API + '/api/status')
+                    .then(function(res) { return res.json(); })
+                    .then(function(data) {
+                        if (data.requests_open) {
+                            document.getElementById('request-section')
+                                .classList.add('visible');
+                            loadSongs();
+                        }
+                    })
+                    .catch(function() {
+                        console.log('Could not reach API');
+                    });
+            }
+
+            // ============================================
+            // LOAD SONGS
+            // ============================================
+
+            function loadSongs() {
+                fetch(API + '/api/songs')
+                    .then(function(res) { return res.json(); })
+                    .then(function(songs) {
+                        allSongs = songs;
+                        populateCategories(songs);
+                        renderSongs(songs);
+                    });
+            }
+
+            function populateCategories(songs) {
+                var categories = [];
+                songs.forEach(function(s) {
+                    if (s.category && categories.indexOf(s.category) === -1) {
+                        categories.push(s.category);
+                    }
+                });
+                categories.sort();
+                var select = document.getElementById('request-category');
+                categories.forEach(function(cat) {
+                    var option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat;
+                    select.appendChild(option);
+                });
+            }
+
+            function renderSongs(songs) {
+                var grid = document.getElementById('request-grid');
+                var count = document.getElementById('request-songs-count');
+                count.textContent = songs.length + ' song' +
+                    (songs.length !== 1 ? 's' : '') + ' found';
+
+                if (!songs.length) {
+                    grid.innerHTML = '<p>No songs found!</p>';
+                    return;
+                }
+
+                grid.innerHTML = songs.map(function(s) {
+                    return '<div class="request-song-card">' +
+                        '<p class="request-song-title">' + s.title + '</p>' +
+                        '<p class="request-song-artist">by ' + s.artist + '</p>' +
+                        '<span class="request-song-category">' +
+                            (s.category || 'other') + '</span>' +
+                        '<button class="request-song-btn" ' +
+                            'data-id="' + s.id + '" ' +
+                            'data-title="' + s.title + '" ' +
+                            'data-artist="' + s.artist + '">' +
+                            '🎵 Request' +
+                        '</button>' +
+                    '</div>';
+                }).join('');
+
+                document.querySelectorAll('.request-song-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        selectedSong = {
+                            id: this.dataset.id,
+                            title: this.dataset.title,
+                            artist: this.dataset.artist
+                        };
+                        openModal();
+                    });
+                });
+            }
+
+            // ============================================
+            // SEARCH AND FILTER
+            // ============================================
+
+            document.getElementById('request-search')
+                .addEventListener('input', filterSongs);
+            document.getElementById('request-category')
+                .addEventListener('change', filterSongs);
+
+            function filterSongs() {
+                var search = document.getElementById('request-search')
+                    .value.toLowerCase();
+                var category = document.getElementById('request-category').value;
+                var filtered = allSongs.filter(function(s) {
+                    var matchSearch = !search ||
+                        s.title.toLowerCase().includes(search) ||
+                        s.artist.toLowerCase().includes(search);
+                    var matchCategory = !category || s.category === category;
+                    return matchSearch && matchCategory;
+                });
+                renderSongs(filtered);
+            }
+
+            // ============================================
+            // MODAL
+            // ============================================
+
+            function openModal() {
+                document.getElementById('modal-song-info').textContent =
+                    '🎵 ' + selectedSong.title + ' — ' + selectedSong.artist;
+                document.getElementById('requester-name').value = '';
+                document.getElementById('requester-message').value = '';
+                document.getElementById('modal-form-content').style.display = 'block';
+                document.getElementById('modal-success').style.display = 'none';
+                document.getElementById('modal-overlay').classList.add('active');
+            }
+
+            function closeModal() {
+                document.getElementById('modal-overlay').classList.remove('active');
+                selectedSong = null;
+            }
+
+            document.getElementById('modal-close')
+                .addEventListener('click', closeModal);
+            document.getElementById('modal-cancel')
+                .addEventListener('click', closeModal);
+            document.getElementById('modal-done')
+                .addEventListener('click', closeModal);
+            document.getElementById('modal-overlay')
+                .addEventListener('click', function(e) {
+                    if (e.target === this) closeModal();
+                });
+
+            // ============================================
+            // SUBMIT REQUEST
+            // ============================================
+
+            document.getElementById('modal-submit')
+                .addEventListener('click', function() {
+                    var name = document.getElementById('requester-name')
+                        .value.trim();
+                    if (!name) {
+                        alert('Please enter your name! 🎵');
+                        return;
+                    }
+                    var message = document.getElementById('requester-message')
+                        .value.trim();
+
+                    fetch(API + '/api/requests', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            song_id: selectedSong.id,
+                            song_title: selectedSong.title,
+                            song_artist: selectedSong.artist,
+                            requester_name: name,
+                            message: message
+                        })
+                    })
+                    .then(function(res) { return res.json(); })
+                    .then(function(data) {
+                        if (data.success) {
+                            document.getElementById('modal-form-content')
+                                .style.display = 'none';
+                            document.getElementById('modal-success')
+                                .style.display = 'block';
+                        } else {
+                            alert('Oops! ' + data.error);
+                        }
+                    });
+                });
+
+            // ============================================
+            // START
+            // ============================================
+
+            checkStatus();
+
+        });
     </script>
 
 </body>
