@@ -470,13 +470,15 @@
             <div class="stream-container" id="youtube-stream">
                 <div class="stream-embed">
                     <iframe
-                        src="https://www.youtube.com/embed/P_nWALcd9ls"
+                        src="https://www.youtube.com/embed/live_stream?channel=UChy4dOtj5rdLSZr50KbPjzA"
                         allowfullscreen>
                     </iframe>
                 </div>
                 <div class="chat-embed">
                     <iframe
-                        src="https://www.youtube.com/live_chat?v=P_nWALcd9ls&embed_domain=marlouck.com">
+                        id="yt-chat-frame"
+                        src="about:blank"
+                        >
                     </iframe>
                 </div>
             </div>
@@ -587,6 +589,8 @@
             var API = 'https://api.marlouck.com';
             var allSongs = [];
             var selectedSong = null;
+            var requestsWereOpen = false;
+            var categoriesLoaded = false;
 
             // ============================================
             // STREAM TOGGLE
@@ -601,6 +605,14 @@
                 });
                 document.getElementById(platform + '-stream').classList.add('active');
                 btn.classList.add('active');
+
+                // Load YouTube chat when switching to YouTube
+                if (platform === 'youtube') {
+                    var chatFrame = document.getElementById('yt-chat-frame');
+                    if (chatFrame.src === 'about:blank') {
+                        chatFrame.src = 'https://www.youtube.com/live_chat?v=live&embed_domain=marlouck.com';
+                    }
+                }
             }
 
             document.querySelectorAll('.toggle-btn').forEach(function(btn) {
@@ -611,23 +623,43 @@
             });
 
             // ============================================
-            // CHECK IF REQUESTS ARE OPEN
+            // CHECK STATUS (every 30 seconds)
             // ============================================
 
             function checkStatus() {
                 fetch(API + '/api/status')
                     .then(function(res) { return res.json(); })
                     .then(function(data) {
-                        if (data.requests_open) {
-                            document.getElementById('request-section')
-                                .classList.add('visible');
-                            loadSongs();
+                        var section = document.getElementById('request-section');
+
+                        if (data.requests_open && !requestsWereOpen) {
+                            // Requests just opened — show section and load songs
+                            section.classList.add('visible');
+                            requestsWereOpen = true;
+                            if (!categoriesLoaded) {
+                                loadSongs();
+                            }
+                        } else if (!data.requests_open && requestsWereOpen) {
+                            // Requests just closed — hide section
+                            section.classList.remove('visible');
+                            requestsWereOpen = false;
+                        } else if (data.requests_open) {
+                            // Already open — make sure section is visible
+                            section.classList.add('visible');
+                            requestsWereOpen = true;
+                            if (!categoriesLoaded) {
+                                loadSongs();
+                            }
                         }
                     })
                     .catch(function() {
                         console.log('Could not reach API');
                     });
             }
+
+            // Check status every 30 seconds
+            checkStatus();
+            setInterval(checkStatus, 30000);
 
             // ============================================
             // LOAD SONGS
@@ -638,7 +670,10 @@
                     .then(function(res) { return res.json(); })
                     .then(function(songs) {
                         allSongs = songs;
-                        populateCategories(songs);
+                        if (!categoriesLoaded) {
+                            populateCategories(songs);
+                            categoriesLoaded = true;
+                        }
                         renderSongs(songs);
                     });
             }
@@ -789,12 +824,6 @@
                         }
                     });
                 });
-
-            // ============================================
-            // START
-            // ============================================
-
-            checkStatus();
 
         });
     </script>
