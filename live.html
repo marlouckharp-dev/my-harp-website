@@ -149,7 +149,8 @@
             margin-top: 0.3rem;
             margin-bottom: 0;
         }
-.request-section {
+
+        .request-section {
             display: none;
             margin-top: 2rem;
             padding: 2rem;
@@ -442,12 +443,14 @@
             from video game soundtracks to classical pieces and everything
             in between. Switch between platforms below!</p>
 
-            <button class="toggle-btn active" id="twitch-btn">
-                🟣 Twitch
-            </button>
-            <button class="toggle-btn" id="youtube-btn">
-                🔴 YouTube
-            </button>
+            <div class="stream-toggle">
+                <button class="toggle-btn active" id="twitch-btn">
+                    🟣 Twitch
+                </button>
+                <button class="toggle-btn" id="youtube-btn">
+                    🔴 YouTube
+                </button>
+            </div>
 
             <!-- Twitch -->
             <div class="stream-container active" id="twitch-stream">
@@ -475,13 +478,12 @@
                 <div class="chat-embed">
                     <iframe
                         id="yt-chat-frame"
-                        src="about:blank"
-                        >
+                        src="about:blank">
                     </iframe>
                 </div>
             </div>
 
-<!-- Request Section (only visible when requests are open) -->
+            <!-- Request Section (only visible when requests are open) -->
             <div class="request-section" id="request-section">
                 <h3>🎵 Request a Song</h3>
                 <p>Find a song below and click Request to add it to the queue!</p>
@@ -511,12 +513,13 @@
                        target="_blank" class="social-btn">
                         🟣 Follow on Twitch
                     </a>
-                    <a href="https://youtube.com/Marlouck_Harp"
+                    <a href="https://youtube.com/@Marlouck_Harp"
                        target="_blank" class="social-btn">
                         🔴 Subscribe on YouTube
                     </a>
                 </div>
             </div>
+
         </section>
 
         <div class="divider">· · · ·</div>
@@ -532,13 +535,12 @@
                     <p class="time">14:00 CET</p>
                     <p class="note">Practice session</p>
                 </div>
-
             </div>
         </section>
 
     </main>
 
-<!-- Request Modal -->
+    <!-- Request Modal -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
             <button class="modal-close" id="modal-close">✕</button>
@@ -580,8 +582,7 @@
         <p>© 2026 Marlou Ck · Made with 🍫 and 🎵</p>
     </footer>
 
-    
-<script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
 
             var API = 'https://api.marlouck.com';
@@ -604,7 +605,6 @@
                 document.getElementById(platform + '-stream').classList.add('active');
                 btn.classList.add('active');
 
-                // Load YouTube chat when switching to YouTube
                 if (platform === 'youtube') {
                     var chatFrame = document.getElementById('yt-chat-frame');
                     if (chatFrame.src === 'about:blank') {
@@ -629,20 +629,16 @@
                     .then(function(res) { return res.json(); })
                     .then(function(data) {
                         var section = document.getElementById('request-section');
-
                         if (data.requests_open && !requestsWereOpen) {
-                            // Requests just opened — show section and load songs
                             section.classList.add('visible');
                             requestsWereOpen = true;
                             if (!categoriesLoaded) {
                                 loadSongs();
                             }
                         } else if (!data.requests_open && requestsWereOpen) {
-                            // Requests just closed — hide section
                             section.classList.remove('visible');
                             requestsWereOpen = false;
                         } else if (data.requests_open) {
-                            // Already open — make sure section is visible
                             section.classList.add('visible');
                             requestsWereOpen = true;
                             if (!categoriesLoaded) {
@@ -655,7 +651,6 @@
                     });
             }
 
-            // Check status every 30 seconds
             checkStatus();
             setInterval(checkStatus, 30000);
 
@@ -822,6 +817,9 @@
                         }
                     });
                 });
-</script>
+
+        }); // end DOMContentLoaded
+    </script>
+
 </body>
 </html>
