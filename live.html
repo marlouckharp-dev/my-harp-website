@@ -442,14 +442,12 @@
             from video game soundtracks to classical pieces and everything
             in between. Switch between platforms below!</p>
 
-            <div class="stream-toggle">
-                <button class="toggle-btn active" onclick="showStream('twitch', this)">
-                    🟣 Twitch
-                </button>
-                <button class="toggle-btn" onclick="showStream('youtube', this)">
-                    🔴 YouTube
-                </button>
-            </div>
+            <button class="toggle-btn active" id="twitch-btn">
+                🟣 Twitch
+            </button>
+            <button class="toggle-btn" id="youtube-btn">
+                🔴 YouTube
+            </button>
 
             <!-- Twitch -->
             <div class="stream-container active" id="twitch-stream">
@@ -615,11 +613,11 @@
                 }
             }
 
-            document.querySelectorAll('.toggle-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    var platform = this.textContent.includes('Twitch') ? 'twitch' : 'youtube';
-                    showStream(platform, this);
-                });
+            document.getElementById('twitch-btn').addEventListener('click', function() {
+                showStream('twitch', this);
+            });
+            document.getElementById('youtube-btn').addEventListener('click', function() {
+                showStream('youtube', this);
             });
 
             // ============================================
