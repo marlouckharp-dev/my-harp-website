@@ -276,7 +276,34 @@
                 </button>
                 <div id="add-message" class="message-box"></div>
             </div>
+<!-- Newsletter Section -->
+            <div class="admin-section">
+                <h2>📧 Newsletter</h2>
+                <p>Send a newsletter to all your subscribers.</p>
 
+                <button class="admin-btn" id="load-subscribers-btn">
+                    👥 Load Subscribers
+                </button>
+                <div id="subscribers-count" style="margin-top: 0.5rem;
+                    font-size: 0.9rem; color: var(--text-secondary);">
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <input type="text" class="admin-input"
+                        id="newsletter-subject"
+                        placeholder="Email subject..." />
+                    <textarea class="admin-input"
+                        id="newsletter-message"
+                        style="height: 150px; resize: vertical;"
+                        placeholder="Write your newsletter message here...
+New release out now! 🎵
+Listen on Spotify: ..."></textarea>
+                    <button class="admin-btn green" id="send-newsletter-btn">
+                        📧 Send Newsletter
+                    </button>
+                    <div id="newsletter-message-result" class="message-box"></div>
+                </div>
+            </div>
             <div class="admin-section">
                 <h2>🎵 Song List</h2>
                 <button class="admin-btn" id="refresh-songs-btn">
@@ -496,7 +523,64 @@
                     el.textContent = '';
                 }, 5000);
             }
+// ============================================
+            // NEWSLETTER
+            // ============================================
 
+            document.getElementById('load-subscribers-btn')
+                .addEventListener('click', function() {
+                    fetch(API + '/api/newsletter/subscribers?secret=' + SECRET)
+                        .then(function(res) { return res.json(); })
+                        .then(function(data) {
+                            var count = document.getElementById('subscribers-count');
+                            count.textContent = '👥 ' + data.length + 
+                                ' subscriber' + (data.length !== 1 ? 's' : '');
+                        });
+                });
+
+            document.getElementById('send-newsletter-btn')
+                .addEventListener('click', function() {
+                    var subject = document.getElementById('newsletter-subject')
+                        .value.trim();
+                    var message = document.getElementById('newsletter-message')
+                        .value.trim();
+
+                    if (!subject || !message) {
+                        showMessage('newsletter-message-result', 'error',
+                            'Please fill in both subject and message!');
+                        return;
+                    }
+
+                    if (!confirm('Send this newsletter to all subscribers?')) return;
+
+                    var btn = document.getElementById('send-newsletter-btn');
+                    btn.textContent = '⏳ Sending...';
+                    btn.disabled = true;
+
+                    fetch(API + '/api/newsletter/send', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            subject: subject,
+                            message: message,
+                            secret: SECRET
+                        })
+                    })
+                    .then(function(res) { return res.json(); })
+                    .then(function(data) {
+                        if (data.success) {
+                            showMessage('newsletter-message-result', 'success',
+                                '✅ ' + data.message);
+                            btn.textContent = '📧 Send Newsletter';
+                            btn.disabled = false;
+                        } else {
+                            showMessage('newsletter-message-result', 'error',
+                                data.error);
+                            btn.textContent = '📧 Send Newsletter';
+                            btn.disabled = false;
+                        }
+                    });
+                });
         });
     </script>
 

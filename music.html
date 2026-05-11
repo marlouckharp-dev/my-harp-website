@@ -273,9 +273,12 @@
                 of the harp.</p>
                 <p>Want to be the first to know when it drops?
                 Leave your email below!</p>
-                <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
-                    <input type="email" placeholder="your@email.com" required />
-                    <button type="submit">Notify me! 🎵</button>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" id="newsletter-email" 
+                        placeholder="your@email.com" required />
+                    <button type="submit" id="newsletter-btn">
+                        Notify me! 🎵
+                    </button>
                 </form>
                 <p class="releases-note">No spam — just a message when the album is out. Promise! 🍫</p>
             </div>
@@ -288,15 +291,42 @@
     </footer>
 
     <script>
-        function handleNewsletterSubmit(event) {
-            event.preventDefault();
-            const input = event.target.querySelector('input');
-            const button = event.target.querySelector('button');
-            button.textContent = '✅ You\'re on the list!';
-            button.style.backgroundColor = '#4CAF50';
-            input.disabled = true;
-            button.disabled = true;
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('newsletter-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    var email = document.getElementById('newsletter-email').value.trim();
+                    var btn = document.getElementById('newsletter-btn');
+
+                    if (!email) return;
+
+                    btn.textContent = 'Sending...';
+                    btn.disabled = true;
+
+                    fetch('https://api.marlouck.com/api/newsletter/subscribe', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: email })
+                    })
+                    .then(function(res) { return res.json(); })
+                    .then(function(data) {
+                        if (data.success) {
+                            btn.textContent = '✅ You\'re on the list!';
+                            btn.style.backgroundColor = '#4CAF50';
+                            document.getElementById('newsletter-email').disabled = true;
+                        } else {
+                            btn.textContent = 'Try again!';
+                            btn.disabled = false;
+                        }
+                    })
+                    .catch(function() {
+                        btn.textContent = 'Try again!';
+                        btn.disabled = false;
+                    });
+                });
+            }
+        });
     </script>
 
 </body>
