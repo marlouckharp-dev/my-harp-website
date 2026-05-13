@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Overlay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: transparent;
+            font-family: 'Segoe UI', sans-serif;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .overlay-container {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 380px;
+        }
+
+        .song-card {
+            background: linear-gradient(135deg, #ff7c5c, #ff8fab);
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 20px rgba(255, 124, 92, 0.4);
+            transform: translateX(-450px);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 0.5s ease;
+        }
+
+        .song-card.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .song-card.next-card {
+            background: linear-gradient(135deg, #ff8fab, #ffaa8a);
+            box-shadow: 0 4px 20px rgba(255, 143, 171, 0.4);
+            transition-delay: 0.1s;
+        }
+
+        .card-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.3rem;
+        }
+
+        .song-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .song-artist {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .song-requester {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        .no-requests {
+            background: rgba(255, 124, 92, 0.85);
+            border-radius: 16px;
+            padding: 0.8rem 1.2rem;
+            transform: translateX(-450px);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 0.5s ease;
+        }
+
+        .no-requests.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .no-requests p {
+            font-size: 0.85rem;
+            color: white;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay-container">
+        <div class="song-card" id="current-card">
+            <p class="card-label">🎵 Now Playing</p>
+            <p class="song-title" id="current-title">—</p>
+            <p class="song-artist" id="current-artist">—</p>
+            <p class="song-requester" id="current-requester"></p>
+        </div>
+        <div class="song-card next-card" id="next-card">
+            <p class="card-label">⏭️ Up Next</p>
+            <p class="song-title" id="next-title">—</p>
+            <p class="song-artist" id="next-artist">—</p>
+            <p class="song-requester" id="next-requester"></p>
+        </div>
+        <div class="no-requests" id="no-requests">
+            <p>🎵 No requests yet — visit marlouck.com/live!</p>
+        </div>
+    </div>
+
+    <script>
+        var API = 'https://api.marlouck.com';
+        var params = new URLSearchParams(window.location.search);
+        var SECRET = params.get('secret') || '';
+
+        var currentCard = document.getElementById('current-card');
+        var nextCard = document.getElementById('next-card');
+        var noRequests = document.getElementById('no-requests');
+
+        function hideAll() {
+            currentCard.classList.remove('visible');
+            nextCard.classList.remove('visible');
+            noRequests.classList.remove('visible');
+        }
+
+        function updateOverlay() {
+            fetch(API + '/api/requests?secret=' + SECRET)
+                .then(function(res) { return res.json(); })
+                .then(function(requests) {
+                    hideAll();
+
+                    if (!requests.length) {
+                        setTimeout(function() {
+                            noRequests.classList.add('visible');
+                        }, 100);
+                        return;
+                    }
+
+                    var current = requests[0];
+                    document.getElementById('current-title').textContent =
+                        current.song_title;
+                    document.getElementById('current-artist').textContent =
+                        'by ' + current.song_artist;
+                    document.getElementById('current-requester').textContent =
+                        'Requested by ' + current.requester_name +
+                        (current.message ? ' · "' + current.message + '"' : '');
+
+                    setTimeout(function() {
+                        currentCard.classList.add('visible');
+                    }, 100);
+
+                    if (requests.length > 1) {
+                        var next = requests[1];
+                        document.getElementById('next-title').textContent =
+                            next.song_title;
+                        document.getElementById('next-artist').textContent =
+                            'by ' + next.song_artist;
+                        document.getElementById('next-requester').textContent =
+                            'Requested by ' + next.requester_name;
+
+                        setTimeout(function() {
+                            nextCard.classList.add('visible');
+                        }, 200);
+                    }
+                })
+                .catch(function() {
+                    console.log('Could not fetch requests');
+                });
+        }
+
+        // Update every 10 seconds
+        updateOverlay();
+        setInterval(updateOverlay, 10000);
+    </script>
+
+</body>
+</html>
