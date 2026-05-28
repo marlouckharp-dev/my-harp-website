@@ -110,7 +110,14 @@
             color: white;
             font-weight: 600;
         }
-
+<!-- Ko-fi Alert — Center Screen -->
+    <div class="kofi-alert" id="kofi-alert">
+        <span class="kofi-alert-emoji">☕</span>
+        <p class="kofi-alert-title">Thank you!</p>
+        <p class="kofi-alert-name" id="kofi-alert-name">Someone</p>
+        <p class="kofi-alert-amount" id="kofi-alert-amount">€0</p>
+        <p class="kofi-alert-message" id="kofi-alert-message"></p>
+    </div>
         /* ============================================
            GOAL OVERLAY — BOTTOM RIGHT
            ============================================ */
@@ -201,6 +208,72 @@
             text-align: center;
             margin-top: 0.4rem;
             display: block;
+        }
+        /* ============================================
+           KO-FI ALERT — CENTER SCREEN
+           ============================================ */
+
+        .kofi-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 500px;
+            background: linear-gradient(135deg, #ff7c5c, #ffcc66);
+            border-radius: 24px;
+            padding: 2rem 2.5rem;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(255, 124, 92, 0.6);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 0.4s ease;
+            z-index: 999;
+        }
+
+        .kofi-alert.visible {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .kofi-alert-emoji {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+            animation: bounce 0.6s ease infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        .kofi-alert-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.3rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .kofi-alert-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .kofi-alert-message {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.9);
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        .kofi-alert-name {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.95);
+            font-weight: 600;
         }
     </style>
 </head>
@@ -304,7 +377,51 @@
                     console.log('Could not fetch requests');
                 });
         }
+// ============================================
+        // KO-FI ALERTS
+        // ============================================
 
+        var shownAlerts = [];
+
+        function checkKofiAlerts() {
+            fetch(API + '/api/kofi/alerts')
+                .then(function(res) { return res.json(); })
+                .then(function(alerts) {
+                    alerts.forEach(function(alert) {
+                        if (shownAlerts.indexOf(alert.id) !== -1) return;
+                        shownAlerts.push(alert.id);
+                        showKofiAlert(alert);
+                    });
+                })
+                .catch(function() {});
+        }
+
+        function showKofiAlert(alert) {
+            var el = document.getElementById('kofi-alert');
+            var emoji = alert.type === 'Subscription' ? '⭐' :
+                        alert.type === 'Shop Order' ? '🛒' : '☕';
+
+            el.querySelector('.kofi-alert-emoji').textContent = emoji;
+            document.getElementById('kofi-alert-name').textContent =
+                alert.name + ' just supported!';
+            document.getElementById('kofi-alert-amount').textContent =
+                alert.currency + ' ' + alert.amount;
+            document.getElementById('kofi-alert-message').textContent =
+                alert.message ? '"' + alert.message + '"' : '';
+
+            // Show alert
+            el.classList.add('visible');
+
+            // Hide after 6 seconds
+            setTimeout(function() {
+                el.classList.remove('visible');
+            }, 6000);
+        }
+
+        // Check for Ko-fi alerts every 5 seconds
+        checkKofiAlerts();
+        setInterval(checkKofiAlerts, 5000);
+        
         // ============================================
         // KO-FI GOAL
         // ============================================
