@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Twitch Panels — Marlou Ck</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Quicksand:wght@600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #f0f0f0;
+            font-family: 'Nunito', sans-serif;
+            padding: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .panel-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-label {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .panel {
+            width: 320px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .panel-header {
+            padding: 1rem 1.2rem 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .panel-emoji {
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .panel-title {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            letter-spacing: 0.03em;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .panel-body {
+            background: #fff8f3;
+            padding: 0.9rem 1.2rem;
+        }
+
+        .panel-body p {
+            font-size: 0.82rem;
+            color: #7a6050;
+            line-height: 1.6;
+            margin-bottom: 0.4rem;
+        }
+
+        .panel-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .panel-body strong {
+            color: #ff7c5c;
+            font-weight: 700;
+        }
+
+        .panel-body .highlight {
+            background: #ffe5d5;
+            border-radius: 8px;
+            padding: 0.4rem 0.7rem;
+            margin-top: 0.4rem;
+            font-size: 0.8rem;
+            color: #ff7c5c;
+            font-weight: 700;
+        }
+
+        .panel-body .command {
+            background: #fff3ec;
+            border-left: 3px solid #ff7c5c;
+            border-radius: 0 8px 8px 0;
+            padding: 0.3rem 0.6rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.8rem;
+            color: #2d2013;
+        }
+
+        .panel-body .command span {
+            color: #ff7c5c;
+            font-weight: 700;
+        }
+
+        .panel-body .social-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #ffe5d5;
+            font-size: 0.82rem;
+            color: #7a6050;
+        }
+
+        .panel-body .social-row:last-child {
+            border-bottom: none;
+        }
+
+        .panel-body .social-row .icon {
+            font-size: 1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Color themes */
+        .theme-coral .panel-header {
+            background: linear-gradient(135deg, #ff7c5c, #ff8fab);
+        }
+        .theme-yellow .panel-header {
+            background: linear-gradient(135deg, #ffcc66, #ffaa8a);
+        }
+        .theme-pink .panel-header {
+            background: linear-gradient(135deg, #ff8fab, #ffcc66);
+        }
+        .theme-warm .panel-header {
+            background: linear-gradient(135deg, #ffaa8a, #ff7c5c);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SONG REQUESTS -->
+    <div class="panel-wrapper">
+        <div class="panel theme-coral">
+            <div class="panel-header">
+                <span class="panel-emoji">🎵</span>
+                <span class="panel-title">Song Requests</span>
+            </div>
+            <div class="panel-body">
+                <p>Requests are open when I'm live!</p>
+                <p>👉 Browse my full song list and request directly at:</p>
+                <div class="highlight">marlouck.com/live</div>
+                <p style="margin-top:0.5rem">Or type in chat:</p>
+                <div class="command"><span>!sr [song name]</span> — request directly</div>
+                <div class="command"><span>!queue</span> — see what's next</div>
+                <div class="command"><span>!currentsong</span> — now playing</div>
+            </div>
+        </div>
+        <span class="panel-label">Song Requests</span>
+    </div>
+
+    <!-- ABOUT ME -->
+    <div class="panel-wrapper">
+        <div class="panel theme-pink">
+            <div class="panel-header">
+                <span class="panel-emoji">🪰</span>
+                <span class="panel-title">About Me</span>
+            </div>
+            <div class="panel-body">
+                <p>Hi, I'm <strong>Marlou</strong> — harpist, neurobiologist and self-confessed chocolate addict! 🍫</p>
+                <p>🎵 Playing harp for <strong>30+ years</strong></p>
+                <p>🪰 Studying <strong>fruit fly brain development</strong> by day</p>
+                <p>🎮 Big fan of <strong>video game music</strong> — especially Final Fantasy!</p>
+                <p>🌱 Currently farming in <strong>Stardew Valley</strong> when not streaming</p>
+                <p style="margin-top:0.4rem">😈 Warning: secret troll on the loose.</p>
+            </div>
+        </div>
+        <span class="panel-label">About Me</span>
+    </div>
+
+    <!-- KO-FI -->
+    <div class="panel-wrapper">
+        <div class="panel theme-yellow">
+            <div class="panel-header">
+                <span class="panel-emoji">☕</span>
+                <span class="panel-title">Support My Work</span>
+            </div>
+            <div class="panel-body">
+                <p>Enjoying the stream? You can support me on Ko-fi!</p>
+                <p>Every coffee helps me:</p>
+                <p>🎵 Create more music & covers</p>
+                <p>🍫 Buy chocolate for science</p>
+                <p>🪰 Feed the fruit flies</p>
+                <div class="highlight">ko-fi.com/marlouck_harp</div>
+                <p style="margin-top:0.5rem">Or type <strong>!kofi</strong> in chat!</p>
+            </div>
+        </div>
+        <span class="panel-label">Ko-fi Support</span>
+    </div>
+
+    <!-- MUSIC / RELEASES -->
+    <div class="panel-wrapper">
+        <div class="panel theme-warm">
+            <div class="panel-header">
+                <span class="panel-emoji">🎶</span>
+                <span class="panel-title">My Music</span>
+            </div>
+            <div class="panel-body">
+                <p>My harp covers and originals are available everywhere!</p>
+                <div class="social-row">
+                    <span class="icon">🟢</span>
+                    <span>Spotify — search <strong>Marlouck</strong></span>
+                </div>
+                <div class="social-row">
+                    <span class="icon">🔵</span>
+                    <span>Bandcamp — marlouck.bandcamp.com</span>
+                </div>
+                <div class="social-row">
+                    <span class="icon">🍎</span>
+                    <span>Apple Music — search <strong>Marlouck</strong></span>
+                </div>
+                <div class="social-row">
+                    <span class="icon">🟣</span>
+                    <span>Deezer — search <strong>Marlouck</strong></span>
+                </div>
+                <div class="highlight">Or visit marlouck.com/music</div>
+            </div>
+        </div>
+        <span class="panel-label">Music / Releases</span>
+    </div>
+
+    <!-- HARP FAQ -->
+    <div class="panel-wrapper">
+        <div class="panel theme-coral">
+            <div class="panel-header">
+                <span class="panel-emoji">🎵</span>
+                <span class="panel-title">Harp FAQ</span>
+            </div>
+            <div class="panel-body">
+                <p><strong>How long have you played?</strong><br>Over 30 years! 🎵</p>
+                <p style="margin-top:0.4rem"><strong>What are the red/blue strings?</strong><br>Red = C notes, Blue = F notes</p>
+                <p style="margin-top:0.4rem"><strong>What are the pedals for?</strong><br>They change all strings of a note to sharp or flat</p>
+                <p style="margin-top:0.4rem"><strong>Does your harp have a name?</strong><br>Yes! Meet Coralie 🎵 (and Desiree, Gwendolyn!)</p>
+            </div>
+        </div>
+        <span class="panel-label">Harp FAQ</span>
+    </div>
+
+    <!-- COMMANDS -->
+    <div class="panel-wrapper">
+        <div class="panel theme-pink">
+            <div class="panel-header">
+                <span class="panel-emoji">🤖</span>
+                <span class="panel-title">Bot Commands</span>
+            </div>
+            <div class="panel-body">
+                <div class="command"><span>!sr [song]</span> — request a song</div>
+                <div class="command"><span>!queue</span> — see the queue</div>
+                <div class="command"><span>!currentsong</span> — now playing</div>
+                <div class="command"><span>!songlist</span> — full song list</div>
+                <div class="command"><span>!kofi</span> — support link</div>
+                <div class="command"><span>!music</span> — streaming links</div>
+                <div class="command"><span>!about</span> — about Marlou</div>
+                <div class="command"><span>!chocolate</span> — 🍫</div>
+                <div class="command"><span>!research</span> — fruit fly science</div>
+                <div class="command"><span>!lurk</span> — go lurk mode</div>
+                <div class="command"><span>!time</span> — Paris time</div>
+            </div>
+        </div>
+        <span class="panel-label">Commands</span>
+    </div>
+
+    <!-- DISCORD -->
+    <div class="panel-wrapper">
+        <div class="panel theme-yellow">
+            <div class="panel-header">
+                <span class="panel-emoji">🪰</span>
+                <span class="panel-title">Join the Community</span>
+            </div>
+            <div class="panel-body">
+                <p>Come hang out with the fruit fly army on Discord!</p>
+                <p>💬 Chat between streams</p>
+                <p>🎵 Music suggestions</p>
+                <p>🍫 Chocolate discussions</p>
+                <p>🪰 Fruit fly appreciation</p>
+                <p>😈 Troll-free zone (mostly)</p>
+                <div class="highlight">discord.gg/2Jk4EwC</div>
+            </div>
+        </div>
+        <span class="panel-label">Discord</span>
+    </div>
+
+</body>
+</html>
