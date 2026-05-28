@@ -19,6 +19,56 @@
             overflow: hidden;
         }
 
+        /* ============================================
+           NAME/LOGO — TOP LEFT
+           ============================================ */
+
+        .stream-logo {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(135deg, #ff7c5c, #ff8fab);
+            border-radius: 50px;
+            padding: 0.6rem 1.4rem;
+            box-shadow: 0 4px 20px rgba(255, 124, 92, 0.4);
+            animation: fadeInDown 0.8s ease forwards;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .stream-logo-name {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .stream-logo-emoji {
+            font-size: 1.4rem;
+        }
+
+        .stream-logo-tagline {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.85);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 0.1rem;
+        }
+
         .songs-container {
             position: fixed;
             bottom: 30px;
@@ -268,6 +318,15 @@
     </style>
 </head>
 <body>
+    
+    <!-- Name/Logo — Top Left -->
+    <div class="stream-logo">
+        <span class="stream-logo-emoji">🎵</span>
+        <div>
+            <div class="stream-logo-name">Marlou Ck</div>
+            <div class="stream-logo-tagline">🍫 Harpist · 🪰 Scientist · 🎮 Gamer</div>
+        </div>
+    </div>
 
     <!-- Song Overlay — Bottom Left -->
     <div class="songs-container">
