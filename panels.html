@@ -292,6 +292,37 @@
         </div>
         <span class="panel-label">Discord</span>
     </div>
+<div style="width:100%; padding: 1rem; text-align: center; 
+        font-family: 'Quicksand', sans-serif; color: #666; font-size: 0.9rem;">
+        <p style="margin-bottom: 1rem;">💡 To save panels: Press <strong>Ctrl+P</strong> 
+        → Save as PDF, or use the button below for individual panels</p>
+        <button onclick="window.print()" style="
+            background: linear-gradient(135deg, #ff7c5c, #ff8fab);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0.7rem 2rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;">
+            🖨️ Print / Save as PDF
+        </button>
+    </div>
 
+    <style>
+        @media print {
+            body {
+                background: white;
+                padding: 1rem;
+            }
+            .panel-label {
+                display: none;
+            }
+            button {
+                display: none;
+            }
+        }
+    </style>
 </body>
 </html>
