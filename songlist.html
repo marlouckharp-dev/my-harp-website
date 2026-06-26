@@ -292,6 +292,12 @@
             color: var(--text-secondary);
             font-style: italic;
         }
+        .song-last-played {
+            font-size: 0.75rem;
+            color: var(--coral);
+            font-style: italic;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -471,11 +477,36 @@
                     return;
                 }
 
-                grid.innerHTML = songs.map(function(s) {
+grid.innerHTML = songs.map(function(s) {
+                    var lastPlayed = '';
+                    if (s.last_played) {
+                        var date = new Date(s.last_played + ' UTC');
+                        var now = new Date();
+                        var diffMs = now - date;
+                        var diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                        var diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                        var diffMins = Math.floor(diffMs / (1000 * 60));
+
+                        if (diffMins < 60) {
+                            lastPlayed = '🕐 Played ' + diffMins + ' min ago';
+                        } else if (diffHours < 24) {
+                            lastPlayed = '🕐 Played ' + diffHours + 'h ago';
+                        } else if (diffDays === 1) {
+                            lastPlayed = '🕐 Played yesterday';
+                        } else if (diffDays < 7) {
+                            lastPlayed = '🕐 Played ' + diffDays + ' days ago';
+                        } else {
+                            lastPlayed = '🕐 Played ' + date.toLocaleDateString('en-GB');
+                        }
+                    }
+
                     return '<div class="song-card">' +
                         '<p class="song-title">' + s.title + '</p>' +
                         '<p class="song-artist">by ' + s.artist + '</p>' +
-                        '<span class="song-category">' + (s.category || 'other') + '</span>' +
+                        '<span class="song-category">' +
+                            (s.category || 'other') + '</span>' +
+                        (lastPlayed ? '<p class="song-last-played">' +
+                            lastPlayed + '</p>' : '') +
                         '<button class="request-btn" ' +
                         (requestsOpen ? '' : 'disabled ') +
                         'data-id="' + s.id + '" ' +
@@ -483,7 +514,7 @@
                         'data-artist="' + s.artist + '">' +
                         (requestsOpen ? '🎵 Request' : '🔒 Requests closed') +
                         '</button>' +
-                        '</div>';
+                    '</div>';
                 }).join('');
 
                 // Add click events to request buttons
